@@ -4,6 +4,7 @@ import requests
 
 import time
 import random
+import webbrowser
 
 
 def get_quote_ming() -> str:
@@ -98,6 +99,8 @@ def on_mouse_press(x, y, button, modifiers):
         _ = q[str(random.randint(1, len(q)))]
         print(_)
         label_quote.text = _
+    else:
+        webbrowser.open('https://github.com/woshishabii/fancy-quote/')
 
 
 # 运行
