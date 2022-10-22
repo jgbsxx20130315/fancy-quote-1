@@ -100,6 +100,7 @@ def on_mouse_press(x, y, button, modifiers):
         print(_)
         label_quote.text = _
     else:
+        print('Opening Project Page')
         webbrowser.open('https://github.com/woshishabii/fancy-quote/')
 
 
