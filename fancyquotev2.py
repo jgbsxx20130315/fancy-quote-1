@@ -42,6 +42,7 @@ get_bg_bing_daily()
 
 # 初始化窗口 / Initialize Window
 window = pyglet.window.Window(width=1920, height=1080)
+window.set_fullscreen(True)
 
 # 激励语标签 / Quote Label
 label_quote = pyglet.text.Label(
