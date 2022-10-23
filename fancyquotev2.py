@@ -6,6 +6,8 @@ import time
 import random
 import webbrowser
 
+__version__ = 'v_helium_2_20221023'
+
 
 def get_quote_ming() -> str:
     # 通过aa1接口获取激励语 / Get through aa1
@@ -47,9 +49,9 @@ window.set_fullscreen(True)
 
 # 激励语标签 / Quote Label
 label_quote = pyglet.text.Label(
-    '爷是激励语 By.woshishabii',
+    '爷是激励语',
     bold=True,
-    font_name='Time New Roman',
+    font_name='Times New Roman',
     font_size=36,
     x=window.width // 2, y=window.height // 2,
     anchor_x='center', anchor_y='baseline',
@@ -58,7 +60,24 @@ label_quote = pyglet.text.Label(
     width=window.width - 250, height=window.height
 )
 
+label_about = pyglet.text.Label(
+    f'5925御用\n本程序由woshishabi编写\n版本{__version__}\n屏幕左上保存激励语\n左下切换激励语\n右上打开项目主页\n右下抽取保存的激励语',
+    font_name='Consolas',
+    font_size=10,
+    x=0, y=window.height,
+    anchor_x='left', anchor_y='top',
+    align='left',
+    multiline=True,
+    width=window.width, height=window.height,
+    color=(169, 169, 169, 255)
+)
+
+# 加载图像并缩放 / Load Image and Resize
 bg_image = pyglet.image.load('bg.jpeg')
+bg_texture = bg_image.get_texture()
+pyglet.gl.glTexParameteri(pyglet.gl.GL_TEXTURE_2D, pyglet.gl.GL_TEXTURE_MAG_FILTER, pyglet.gl.GL_NEAREST)
+bg_texture.width = 1920
+bg_texture.height = 1080
 
 last_click = 0.0
 
@@ -69,6 +88,7 @@ def on_draw():
     window.clear()
     bg_image.blit(0, 0)
     label_quote.draw()
+    label_about.draw()
 
 
 @window.event
@@ -76,6 +96,7 @@ def on_mouse_press(x, y, button, modifiers):
     # 鼠标点击事件 / Mouse Press Event
     global last_click
     print('Click Event: ', x, y, button, modifiers)
+    print(window.width, window.height)
     # 检查是否为双击 / Check If Double-Clicked
     if time.time() - last_click < 0.5:
         window.close()
