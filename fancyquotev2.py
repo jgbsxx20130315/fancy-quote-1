@@ -2,11 +2,13 @@ import pyglet
 
 import requests
 
+import os
+import glob
 import time
 import random
 import webbrowser
 
-__version__ = 'v_helium_2_20221023'
+__version__ = 'v_helium_3_20221023'
 
 
 def get_quote_ming() -> str:
@@ -37,6 +39,16 @@ def format_quote(quote: str) -> str:
             result.insert(index + 1 + offset, '\n')
             offset += 1
     return ''.join(result)
+
+
+def get_music():
+    if not os.path.exists('music'):
+        return None, None
+    try:
+        _ = random.choice(glob.glob('music/*.mp3'))
+        return pyglet.media.load(_), _
+    except IndexError:
+        return None, None
 
 
 print('Download Background from Bing')
@@ -72,6 +84,8 @@ label_about = pyglet.text.Label(
     color=(169, 169, 169, 255)
 )
 
+label_log = pyglet.text.Label('', font_name='Consolas', y=10)
+
 # 加载图像并缩放 / Load Image and Resize
 bg_image = pyglet.image.load('bg.jpeg')
 bg_texture = bg_image.get_texture()
@@ -80,21 +94,51 @@ bg_texture.width = 1920
 bg_texture.height = 1080
 
 last_click = 0.0
+log_time = 0.0
+log_flag = False
+
+
+def log(dt):
+    global log_time
+    global log_flag
+    if time.time() - log_time <= 5:
+        log_flag = True
+    else:
+        log_flag = False
+
+
+pyglet.clock.schedule_interval(log, .01)
+
+bgm, bgm_fn = get_music()
+player = pyglet.media.Player()
+if bgm:
+    player.queue(bgm)
+    player.volume = 0.1
+    print('Playing at', player.volume)
+    player.play()
+    label_log.text = f'Playing {bgm_fn}'
+else:
+    label_log.text = 'Media Not Found'
+log_time = time.time()
 
 
 @window.event
 def on_draw():
     # 渲染事件 / Render Event
+    global log_time
     window.clear()
     bg_image.blit(0, 0)
     label_quote.draw()
     label_about.draw()
+    if log_flag:
+        label_log.draw()
 
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     # 鼠标点击事件 / Mouse Press Event
     global last_click
+    global log_time
     print('Click Event: ', x, y, button, modifiers)
     print(window.width, window.height)
     # 检查是否为双击 / Check If Double-Clicked
@@ -104,25 +148,31 @@ def on_mouse_press(x, y, button, modifiers):
         last_click = time.time()
     if x <= window.width // 2 and y <= window.height // 2:
         # 屏幕左下 -> 刷新激励语
+        label_log.text = 'Getting Quote'
+        log_time = time.time()
         _ = format_quote(get_quote_ming())
         label_quote.text = _
         print(_)
     elif x <= window.width // 2 and y >= window.height // 2:
         # 屏幕左上 -> 评分激励语
         print('Rating...')
+        label_log.text = 'Rating'
+        log_time = time.time()
         _ = requests.post('http://jgbsxx20130315.pythonanywhere.com/api/v1/quote/rated',
                           json={'content': label_quote.text})
         print(_)
     elif x >= window.width // 2 and y <= window.height // 2:
         # 屏幕右下 -> 优质激励语
         print('Getting Rated Quotes')
+        label_log.text = 'Getting Rated Quote'
+        log_time = time.time()
         q = requests.get('http://jgbsxx20130315.pythonanywhere.com/api/v1/quote/rated').json()['Items']
         _ = q[str(random.randint(1, len(q)))]
         print(_)
         label_quote.text = _
     else:
-        print('Opening Project Page')
-        webbrowser.open('https://github.com/woshishabii/fancy-quote/')
+        # 屏幕右上 -> 停止音乐
+        player.volume = 0
 
 
 # 运行
