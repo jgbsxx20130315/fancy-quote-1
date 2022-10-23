@@ -6,9 +6,8 @@ import os
 import glob
 import time
 import random
-import webbrowser
 
-__version__ = 'v_helium_3_20221023'
+__version__ = 'v_lithium_1_20221023'
 
 
 def get_quote_ming() -> str:
@@ -95,6 +94,7 @@ bg_texture.height = 1080
 
 last_click = 0.0
 log_time = 0.0
+music_time = time.time()
 log_flag = False
 
 
@@ -105,6 +105,8 @@ def log(dt):
         log_flag = True
     else:
         log_flag = False
+    if time.time() - music_time > 60:
+        player.volume = 0
 
 
 pyglet.clock.schedule_interval(log, .01)
