@@ -6,9 +6,15 @@ import os
 import glob
 import time
 import random
-import configparser
 
-__version__ = 'v_lithium_2_20221028'
+__version__ = 'v_lithium_3_20221104'
+
+
+if os.path.exists('quote.txt'):
+    with open('quote.txt', 'r') as f:
+        quote = f.read()
+else:
+    quote = '未读取到有效预置'
 
 
 def get_quote_ming() -> str:
@@ -61,7 +67,7 @@ window.set_fullscreen(True)
 
 # 激励语标签 / Quote Label
 label_quote = pyglet.text.Label(
-    '爷是激励语',
+    quote,
     bold=True,
     font_name='Times New Roman',
     font_size=36,
