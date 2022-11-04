@@ -7,12 +7,12 @@ import glob
 import time
 import random
 
-__version__ = 'v_lithium_1_20221023'
+__version__ = 'v_lithium_2_20221028'
 
 
 def get_quote_ming() -> str:
     # 通过aa1接口获取激励语 / Get through aa1
-    return requests.get('https://v.api.aa1.cn/api/api-wenan-mingrenmingyan/index.php?aa1=text').text[3:-4]
+    return requests.get('https://v.api.aa1.cn/api/api-wenan-mingrenmingyan/index.php?aa1=json').json()[0]['mingrenmingyan']
 
 
 def get_bg_bing_daily() -> None:
