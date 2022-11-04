@@ -62,8 +62,8 @@ print('Download Background from Bing')
 get_bg_bing_daily()
 
 # 初始化窗口 / Initialize Window
-window = pyglet.window.Window(width=1920, height=1080)
-window.set_fullscreen(True)
+window = pyglet.window.Window(width=1920, height=1080, resizable=True)
+# window.set_fullscreen(True)
 
 # 激励语标签 / Quote Label
 label_quote = pyglet.text.Label(
@@ -182,6 +182,15 @@ def on_mouse_press(x, y, button, modifiers):
     else:
         # 屏幕右上 -> 停止音乐
         player.volume = 0
+
+
+@window.event
+def on_resize(width, height):
+    label_quote.x = window.width // 2
+    label_quote.y = window.height // 2
+    label_about.y = window.height
+    bg_texture.width = window.width
+    bg_texture.height = window.height
 
 
 # 运行
