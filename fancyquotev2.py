@@ -37,9 +37,6 @@ def on_mouse_press(x, y, button, modifiers):
 
 @window.event
 def on_resize(width, height):
-    label_quote.x = window.width // 2
-    label_quote.y = window.height // 2
-    label_about.y = window.height
     bg_texture.width = window.width
     bg_texture.height = window.height
 
