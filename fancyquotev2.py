@@ -1,7 +1,5 @@
 import pyglet
 
-import requests
-
 import os
 import glob
 import time
