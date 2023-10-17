@@ -18,8 +18,8 @@ bg_image = pyglet.image.load(fn)
 os.rename(fn, f'{fn}.disabled')
 bg_texture = bg_image.get_texture()
 pyglet.gl.glTexParameteri(pyglet.gl.GL_TEXTURE_2D, pyglet.gl.GL_TEXTURE_MAG_FILTER, pyglet.gl.GL_NEAREST)
-bg_texture.width = 1920
-bg_texture.height = 1080
+bg_texture.width = 3840
+bg_texture.height = 2160
 
 
 @window.event
