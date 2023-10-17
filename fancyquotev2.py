@@ -10,7 +10,7 @@ __version__ = 'v_20231017'
 
 # 初始化窗口 / Initialize Window
 window = pyglet.window.Window(width=1920, height=1080, resizable=True)
-# window.set_fullscreen(True)
+window.set_fullscreen(True)
 
 # 加载图像并缩放 / Load Image and Resize
 fn = random.choice(glob.glob('./*.JPG'))
